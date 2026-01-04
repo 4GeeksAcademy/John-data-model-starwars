@@ -13,6 +13,12 @@ class User(db.Model):
     favoritecha: Mapped[list['FavoriteCharacters']] = relationship(back_populates='user')
     favoriteveh: Mapped[list['FavoriteVehicles']] = relationship(back_populates='user')
     favoritepla: Mapped[list['FavoritePlanets']] = relationship(back_populates='user')
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+        }
 
 class Characters(db.Model):
     __tablename__ = 'character'
@@ -68,9 +74,4 @@ class FavoritePlanets(db.Model):
     planet_id: Mapped[int] = mapped_column(ForeignKey('planets.id'))
     planet: Mapped['Planets'] = relationship(back_populates='favorite_by')
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "planet_id": self.planet_id
-        }
+
